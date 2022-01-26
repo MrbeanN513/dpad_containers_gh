@@ -6,7 +6,7 @@ Dpad_container very usefull for dpad/keyboard navigation for web/andrid tv/windo
 
 -import 'package:dpad_containers/dpad_containers.dart'; 
 
-![](https://github.com/MrbeanN513/dpad_containers/blob/master/example/dpad_container.gif)
+![](https://github.com/MrbeanN513/dpad_containers_gh/blob/master/example/dpad_container.gif)
 
 ```
 DpadContainerButton(

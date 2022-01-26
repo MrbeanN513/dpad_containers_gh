@@ -1,8 +1,8 @@
 name: dpad_containers_gh
 description: A new Flutter package project.
 version: 0.0.1
-homepage:
-
+homepage: https://github.com/MrbeanN513/dpad_containers_gh.git
+ 
 environment:
   sdk: ">=2.15.1 <3.0.0"
   flutter: ">=1.17.0"
