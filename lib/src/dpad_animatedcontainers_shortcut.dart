@@ -126,7 +126,7 @@ class DpadAnimatedContainerButton extends StatefulWidget {
     this.debugLabel,
     this.autoFocus,
     this.clipBehavior = Clip.none,
-    this.duration,
+    @required this.duration,
     this.focusedduration,
     this.nonfocusedduration,
     this.onEnd,
@@ -799,8 +799,9 @@ class _FocusableEnterTapActionableWidget
           hasFocus ? widget.focusedonEnd : widget.nonfocusedonEnd,
       curve: widget.curve,
       duration: widget.duration!,
-      child: hasFocus ? widget.focusedchild : widget.nonfocusedchild,
-      color: hasFocus
+      child: widget.child ??=
+          hasFocus ? widget.focusedchild : widget.nonfocusedchild,
+      color: widget.colors ??= hasFocus
           ? widget.focusedBackgroundColor
           : widget.nonfocusedBackgroundColor,
       alignment: widget.alignment ??=
@@ -815,9 +816,9 @@ class _FocusableEnterTapActionableWidget
       foregroundDecoration: hasFocus
           ? widget.focusedForegroundDecoration
           : widget.nonfocusedForegroundDecoration,
-      width: 
+      width: widget.width ??=
           hasFocus ? widget.focusedwidth : widget.nonfocusedwidth,
-      height: 
+      height: widget.height ??=
           hasFocus ? widget.focusedheight : widget.nonfocusedheight,
       margin: widget.margin ??=
           hasFocus ? widget.focusedmargin : widget.nonfocusedmargin,

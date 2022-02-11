@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: isbool2
           ? isbool
               // ? Colors.red
-              ?Colors.greenAccent
+              ? Colors.greenAccent
               : Colors.white
           : Colors.yellow,
       appBar: AppBar(
@@ -114,7 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   onKey_numberpad_subtract: _decrement,
                   onPressedEnterOKAction: changeRedgreen,
                   onPressedSpacebarAction: changeRedgreen,
-                  child: const Center(child: Icon(Icons.light)),
+                  child:  Center(child: Icon(Icons.light)),
+
                   focusedBackgroundDecoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25.0),
                       color: Colors.blue),
@@ -158,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ontap: () => _decrementCounter(),
                   onKey_numberpad_add: _increment,
                   onKey_numberpad_subtract: _decrement,
-                  onPressedEnterOKAction:_decrement,
+                  onPressedEnterOKAction: _decrement,
                   onPressedSpacebarAction: changeRedyellow,
                   focusedchild: const Center(child: Icon(Icons.remove)),
                   nonfocusedchild: const Center(child: Icon(Icons.remove)),
