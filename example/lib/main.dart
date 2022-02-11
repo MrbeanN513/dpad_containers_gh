@@ -108,13 +108,15 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 DpadContainerButton(
                   autoFocus: true,
-                  height: 50,
-                  width: 50,
+                  height: 100,
+                  width: 100,
                   onKey_numberpad_add: _increment,
                   onKey_numberpad_subtract: _decrement,
                   onPressedEnterOKAction: changeRedgreen,
                   onPressedSpacebarAction: changeRedgreen,
-                  child:  Center(child: Icon(Icons.light)),
+                  child: const Center(child: Icon(Icons.light)),
+                  // focusedchild: const Center(child: Icon(Icons.light)),
+                  // nonfocusedchild: const Center(child: Icon(Icons.light)),
 
                   focusedBackgroundDecoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25.0),
@@ -130,8 +132,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 DpadContainerButton(
                   autoFocus: true,
-                  height: 50,
-                  width: 50,
+                  height: 100,
+                  width: 100,
                   ontap: () => _incrementCounter(),
                   onKey_numberpad_add: _increment,
                   onKey_numberpad_subtract: _decrement,
@@ -154,8 +156,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 DpadContainerButton(
                   autoFocus: true,
-                  height: 50,
-                  width: 50,
+                  height: 100,
+                  width: 100,
                   ontap: () => _decrementCounter(),
                   onKey_numberpad_add: _increment,
                   onKey_numberpad_subtract: _decrement,
@@ -177,14 +179,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 DpadContainerButton(
                   autoFocus: true,
-                  height: 50,
-                  width: 50,
-
+                  height: 100,
+                  width: 100,
+                  // ontap: () => _decrementCounter(),
                   onKey_numberpad_add: _increment,
                   onKey_numberpad_subtract: _decrement,
                   onPressedEnterOKAction: changeRedgreen,
                   onPressedSpacebarAction: changeRedyellow,
-                  child: const Icon(Icons.dark_mode),
+                  focusedchild: const Center(child: Icon(Icons.dark_mode)),
+                  nonfocusedchild: const Center(child: Icon(Icons.dark_mode)),
                   focusedBackgroundDecoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25.0),
                       color: Colors.blue),
@@ -219,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               focusedheight: 300,
               nonfocusedheight: 100,
-              focusedwidth: 300,
+              focusedwidth: 400,
               nonfocusedwidth: 250,
               focusedBackgroundDecoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25.0),

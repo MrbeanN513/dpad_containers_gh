@@ -74,6 +74,8 @@ class DpadContainerButton extends StatefulWidget {
   final VoidBuildContext? _onKey_numberpad_home;
   final VoidTrapKeyEvent? voidTrapKeyEvent;
   final Clip clipBehavior;
+  final Clip focusedclipBehavior;
+  final Clip nonfocusedclipBehavior;
   final AlignmentGeometry? focusedtransformAlignment;
   final AlignmentGeometry? nonfocusedtransformAlignment;
   final Widget? focusedchild;
@@ -122,6 +124,8 @@ class DpadContainerButton extends StatefulWidget {
     this.debugLabel,
     this.autoFocus,
     this.clipBehavior = Clip.none,
+    this.focusedclipBehavior = Clip.none,
+    this.nonfocusedclipBehavior = Clip.none,
     this.transformAlignment,
     this.focusedheight,
     this.focusedalignment,
@@ -240,7 +244,7 @@ class DpadContainerButton extends StatefulWidget {
         _onKey_numberpad_end = onKey_numberpad_end,
         _onKey_numberpad_pageup = onKey_numberpad_pageup,
         _onKey_numberpad_pagedown = onKey_numberpad_pagedown,
-       _onPressedSpacebarAction= onPressedSpacebarAction,
+        _onPressedSpacebarAction = onPressedSpacebarAction,
         super(key: key);
 
   @override
@@ -287,7 +291,7 @@ class _FocusableEnterTapActionableWidget extends State<DpadContainerButton> {
           event.logicalKey == LogicalKeyboardKey.gameButton7 ||
           event.logicalKey == LogicalKeyboardKey.gameButtonB) {
         return _onPressedEscAction(context);
-      }else if (event.logicalKey == LogicalKeyboardKey.space) {
+      } else if (event.logicalKey == LogicalKeyboardKey.space) {
         return _onPressedSpacebarAction(context);
       } //?
       else if (event.logicalKey == LogicalKeyboardKey.keyA) {
@@ -392,13 +396,15 @@ class _FocusableEnterTapActionableWidget extends State<DpadContainerButton> {
     widget._onPressedEscAction!(context);
     return KeyEventResult.handled;
   }
-KeyEventResult _onPressedSpacebarAction(BuildContext context) {
+
+  KeyEventResult _onPressedSpacebarAction(BuildContext context) {
     if (widget._onPressedSpacebarAction == null) {
       return KeyEventResult.ignored;
     }
     widget._onPressedSpacebarAction!(context);
     return KeyEventResult.handled;
   }
+
   KeyEventResult _onPressedEnterOKAction(BuildContext context) {
     if (widget._onPressedEnterOKAction == null) {
       return KeyEventResult.ignored;
@@ -779,35 +785,57 @@ KeyEventResult _onPressedSpacebarAction(BuildContext context) {
 
   Widget _getEnabledChild(bool hasFocus) {
     Container container = Container(
-      child: widget.child ??=
-          hasFocus ? widget.focusedchild : widget.nonfocusedchild,
-      color: widget.colors ??= hasFocus
-          ? widget.focusedBackgroundColor
-          : widget.nonfocusedBackgroundColor,
-      alignment: widget.alignment ??=
-          hasFocus ? widget.focusedalignment : widget.nonfocusedalignment,
-      constraints: widget.constraints ??=
-          hasFocus ? widget.focusedconstraints : widget.nonfocusedconstraints,
-      decoration: hasFocus
-          ? widget.focusedBackgroundDecoration
-          : widget.nonfocusedBackgroundDecoration,
-      padding: widget.padding ??=
-          hasFocus ? widget.focusedpadding : widget.nonfocusedpadding,
-      foregroundDecoration: hasFocus
-          ? widget.focusedForegroundDecoration
-          : widget.nonfocusedForegroundDecoration,
-      width: widget.width ??=
-          hasFocus ? widget.focusedwidth : widget.nonfocusedwidth,
-      height: widget.height ??=
-          hasFocus ? widget.focusedheight : widget.nonfocusedheight,
-      margin: widget.margin ??=
-          hasFocus ? widget.focusedmargin : widget.nonfocusedmargin,
-      transform: widget.transform ??=
-          hasFocus ? widget.focusedtransform : widget.nonfocusedtransform,
-      transformAlignment: widget.transformAlignment ??= hasFocus
-          ? widget.focusedtransformAlignment
-          : widget.nonfocusedtransformAlignment,
-      clipBehavior: widget.clipBehavior,
+      child: (widget.child == null)
+          ? (hasFocus ? widget.focusedchild : widget.nonfocusedchild)
+          : widget.child,
+      color: (widget.colors == null)
+          ? (hasFocus
+              ? widget.focusedBackgroundColor
+              : widget.nonfocusedBackgroundColor)
+          : widget.colors,
+      alignment: (widget.alignment == null)
+          ? (hasFocus ? widget.focusedalignment : widget.nonfocusedalignment)
+          : widget.alignment,
+      constraints: (widget.constraints == null)
+          ? (hasFocus
+              ? widget.focusedconstraints
+              : widget.nonfocusedconstraints)
+          : widget.constraints,
+      decoration: (widget.backgroundDecoration == null)
+          ? (hasFocus
+              ? widget.focusedBackgroundDecoration
+              : widget.nonfocusedBackgroundDecoration)
+          : widget.backgroundDecoration,
+      padding: (widget.padding == null)
+          ? (hasFocus ? widget.focusedpadding : widget.nonfocusedpadding)
+          : widget.padding,
+      foregroundDecoration: (widget.foregroundDecoration == null)
+          ? (hasFocus
+              ? widget.focusedForegroundDecoration
+              : widget.nonfocusedForegroundDecoration)
+          : widget.foregroundDecoration,
+      width: (widget.width == null)
+          ? (hasFocus ? widget.focusedwidth : widget.nonfocusedwidth)
+          : widget.width,
+      height: (widget.height == null)
+          ? (hasFocus ? widget.focusedheight : widget.nonfocusedheight)
+          : widget.height,
+      margin: (widget.margin == null)
+          ? (hasFocus ? widget.focusedmargin : widget.nonfocusedmargin)
+          : widget.margin,
+      transform: (widget.transform == null)
+          ? (hasFocus ? widget.focusedtransform : widget.nonfocusedtransform)
+          : widget.transform,
+      transformAlignment: (widget.transformAlignment == null)
+          ? (hasFocus
+              ? widget.focusedtransformAlignment
+              : widget.nonfocusedtransformAlignment)
+          : widget.transformAlignment,
+      clipBehavior: (widget.clipBehavior == Clip.none)
+          ? (hasFocus
+              ? widget.focusedclipBehavior
+              : widget.nonfocusedclipBehavior)
+          : Clip.none,
     );
 
     return container;

@@ -26,6 +26,8 @@ class DpadAnimatedContainerButton extends StatefulWidget {
   final VoidCallback? focusedonEnd;
   final VoidCallback? nonfocusedonEnd;
   final Curve curve;
+  final Curve focusedcurve;
+  final Curve nonfocusedcurve;
   final String? debugLabel;
   final bool? autoFocus;
   final VoidBuildContext? _onPressedEnterOKAction;
@@ -78,6 +80,8 @@ class DpadAnimatedContainerButton extends StatefulWidget {
   final VoidBuildContext? _onKey_numberpad_home;
   final VoidTrapKeyEvent? voidTrapKeyEvent;
   final Clip clipBehavior;
+  final Clip focusedclipBehavior;
+  final Clip nonfocusedclipBehavior;
   final AlignmentGeometry? focusedtransformAlignment;
   final AlignmentGeometry? nonfocusedtransformAlignment;
   final Widget? focusedchild;
@@ -126,6 +130,8 @@ class DpadAnimatedContainerButton extends StatefulWidget {
     this.debugLabel,
     this.autoFocus,
     this.clipBehavior = Clip.none,
+    this.focusedclipBehavior = Clip.none,
+    this.nonfocusedclipBehavior = Clip.none,
     @required this.duration,
     this.focusedduration,
     this.nonfocusedduration,
@@ -133,6 +139,8 @@ class DpadAnimatedContainerButton extends StatefulWidget {
     this.focusedonEnd,
     this.nonfocusedonEnd,
     this.curve = Curves.linear,
+    this.focusedcurve = Curves.linear,
+    this.nonfocusedcurve = Curves.linear,
     this.transformAlignment,
     this.focusedheight,
     this.focusedalignment,
@@ -795,39 +803,64 @@ class _FocusableEnterTapActionableWidget
 
   Widget _getEnabledChild(bool hasFocus) {
     AnimatedContainer Animatedcontainer = AnimatedContainer(
-      onEnd: widget.onEnd ??=
-          hasFocus ? widget.focusedonEnd : widget.nonfocusedonEnd,
-      curve: widget.curve,
+      onEnd: (widget.onEnd == null)
+          ? (hasFocus ? widget.focusedonEnd : widget.nonfocusedonEnd)
+          : widget.onEnd,
+      curve: (widget.curve == Curves.linear)
+          ? (hasFocus ? widget.focusedcurve : widget.nonfocusedcurve)
+          : Curves.linear,
       duration: widget.duration!,
-      child: widget.child ??=
-          hasFocus ? widget.focusedchild : widget.nonfocusedchild,
-      color: widget.colors ??= hasFocus
-          ? widget.focusedBackgroundColor
-          : widget.nonfocusedBackgroundColor,
-      alignment: widget.alignment ??=
-          hasFocus ? widget.focusedalignment : widget.nonfocusedalignment,
-      constraints: widget.constraints ??=
-          hasFocus ? widget.focusedconstraints : widget.nonfocusedconstraints,
-      decoration: hasFocus
-          ? widget.focusedBackgroundDecoration
-          : widget.nonfocusedBackgroundDecoration,
-      padding: widget.padding ??=
-          hasFocus ? widget.focusedpadding : widget.nonfocusedpadding,
-      foregroundDecoration: hasFocus
-          ? widget.focusedForegroundDecoration
-          : widget.nonfocusedForegroundDecoration,
-      width: widget.width ??=
-          hasFocus ? widget.focusedwidth : widget.nonfocusedwidth,
-      height: widget.height ??=
-          hasFocus ? widget.focusedheight : widget.nonfocusedheight,
-      margin: widget.margin ??=
-          hasFocus ? widget.focusedmargin : widget.nonfocusedmargin,
-      transform: widget.transform ??=
-          hasFocus ? widget.focusedtransform : widget.nonfocusedtransform,
-      transformAlignment: widget.transformAlignment ??= hasFocus
-          ? widget.focusedtransformAlignment
-          : widget.nonfocusedtransformAlignment,
-      clipBehavior: widget.clipBehavior,
+      child: (widget.child == null)
+          ? (hasFocus ? widget.focusedchild : widget.nonfocusedchild)
+          : widget.child,
+      color: (widget.colors == null)
+          ? (hasFocus
+              ? widget.focusedBackgroundColor
+              : widget.nonfocusedBackgroundColor)
+          : widget.colors,
+      alignment: (widget.alignment == null)
+          ? (hasFocus ? widget.focusedalignment : widget.nonfocusedalignment)
+          : widget.alignment,
+      constraints: (widget.constraints == null)
+          ? (hasFocus
+              ? widget.focusedconstraints
+              : widget.nonfocusedconstraints)
+          : widget.constraints,
+      decoration: (widget.backgroundDecoration == null)
+          ? (hasFocus
+              ? widget.focusedBackgroundDecoration
+              : widget.nonfocusedBackgroundDecoration)
+          : widget.backgroundDecoration,
+      padding: (widget.padding == null)
+          ? (hasFocus ? widget.focusedpadding : widget.nonfocusedpadding)
+          : widget.padding,
+      foregroundDecoration: (widget.foregroundDecoration == null)
+          ? (hasFocus
+              ? widget.focusedForegroundDecoration
+              : widget.nonfocusedForegroundDecoration)
+          : widget.foregroundDecoration,
+      width: (widget.width == null)
+          ? (hasFocus ? widget.focusedwidth : widget.nonfocusedwidth)
+          : widget.width,
+      height: (widget.height == null)
+          ? (hasFocus ? widget.focusedheight : widget.nonfocusedheight)
+          : widget.height,
+      margin: (widget.margin == null)
+          ? (hasFocus ? widget.focusedmargin : widget.nonfocusedmargin)
+          : widget.margin,
+      transform: (widget.transform == null)
+          ? (hasFocus ? widget.focusedtransform : widget.nonfocusedtransform)
+          : widget.transform,
+      transformAlignment: (widget.transformAlignment == null)
+          ? (hasFocus
+              ? widget.focusedtransformAlignment
+              : widget.nonfocusedtransformAlignment)
+          : widget.transformAlignment,
+      clipBehavior: (widget.clipBehavior == Clip.none)
+          ? (hasFocus
+              ? widget.focusedclipBehavior
+              : widget.nonfocusedclipBehavior)
+          : Clip.none,
     );
     return Animatedcontainer;
   }
