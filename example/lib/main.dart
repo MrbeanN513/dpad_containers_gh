@@ -41,6 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isbool2 = true;
   bool selected = false;
   bool isvisable = false;
+  FocusNode nodemine = FocusNode();
+  TextEditingController minecontrler = TextEditingController();
 
   void _incrementCounter() {
     setState(() {
@@ -115,13 +117,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: selected
-          ? (isbool2
+          ? const Color(0xff121212)
+          : (isbool2
               ? (isbool
                   // ? Colors.red
                   ? Colors.greenAccent
                   : Colors.white)
-              : Colors.yellow)
-          : const Color(0xff121212),
+              : Colors.yellow),
       // appBar: AppBar(
       //   title: Text(widget.title),
       // ),
@@ -137,17 +139,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     'Presed numpad add button to increment & minus to decrement & spacebar to change color',
                     style: TextStyle(
-                        color: selected ? Colors.black : Colors.white),
+                        color: selected ? Colors.white : Colors.black),
                   ),
                   Text(
                     'You have pushed the button this many times:',
                     style: TextStyle(
-                        color: selected ? Colors.black : Colors.white),
+                        color: selected ? Colors.white : Colors.black),
                   ),
                   Text(
                     '$_counter',
                     style: TextStyle(
-                        color: selected ? Colors.black : Colors.white,
+                        color: selected ? Colors.white : Colors.black,
                         fontSize: 35),
                   ),
                   const SizedBox(
@@ -207,10 +209,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Dpad_timer_button(
                         isFocusTimeron: true,
-                      onFocasableAction: animation,
-                        onMouseHoverAction:animation, 
-                      //  onEnter: (details)=>print("object"),
-                       isMouseHoveron: true,
+                        onFocasableAction: animation,
+                        onMouseHoverAction: animation,
+                        //  onEnter: (details)=>print("object"),
+                        isMouseHoveron: true,
                         onFocusduration: const Duration(seconds: 3),
                         height: 100,
                         onPressedEscAction: esckey,
@@ -336,6 +338,30 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(
                     height: 20,
                   ),
+                  DpadTextfield(
+                    focusNodemine: nodemine,
+                    textcontrollermine: minecontrler,
+                    duration: const Duration(milliseconds: 500),
+                    focusedheight: 50,
+                    nonfocusedheight: 50,
+                    nonfocusedwidth: 50,
+                    focusedwidth: 250,
+                    onChanged: (text) {
+                      print('First text field: $text');
+                    },
+                    onPressedEnterOKAction: (context) =>
+                        print(minecontrler.text),
+                    nonfocusedchild: const Center(child: Icon(Icons.search)),
+                    focusedBackgroundDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        color: Colors.blue),
+                    nonfocusedBackgroundDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        color: Colors.grey),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   DpadListTileButton(
                     onPressedEscAction: esckey,
                     tick_ya_button: true,
@@ -353,7 +379,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     nonpressedtitle: const Text("Switch off"),
                     isButtonPressed: selected,
                     onPressedEnterOKAction: switchpresed,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -366,7 +392,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Container(
                 height: 200,
                 width: 250,
-                color: Colors.blue,
+                color: Colors.black45,
                 child: Container(),
               ),
             ),

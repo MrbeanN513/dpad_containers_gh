@@ -1,20 +1,18 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../dpad_containers_gh.dart';
 
-class DpadListTileButton extends StatefulWidget {
-  final Widget? child;
+class DpadTextfield extends StatefulWidget {
+  // final Widget? child;
   final Decoration? backgroundDecoration;
   final EdgeInsetsGeometry? padding;
   final Decoration? foregroundDecoration;
   final double? width;
   final double? height;
   final Color? colors;
-  final Color? buttonActivecolors;
-  final Color? buttonNonActivecolors;
   final EdgeInsetsGeometry? margin;
   final Matrix4? transform;
   final AlignmentGeometry? alignment;
@@ -31,16 +29,9 @@ class DpadListTileButton extends StatefulWidget {
   final Curve nonfocusedcurve;
   final String? debugLabel;
   final bool? autoFocus;
-  final bool? isButtonPressed;
-  final Widget? title;
-  final Widget? pressedtitle;
-  final Widget? nonpressedtitle;
-  final Widget? subtitle;
-  final Widget? leading;
-  final Widget? customTrailling;
-  final bool? tick_ya_button;
-  final bool? isCustomTraillingOn;
-
+  final ValueChanged<String>? onChanged;
+  final FocusNode? focusNodemine;
+  final TextEditingController? textcontrollermine;
   final VoidBuildContext? _onPressedEnterOKAction;
   final VoidBuildContext? _onPressedEscAction;
   final VoidBuildContext? _onPressedSpacebarAction;
@@ -121,9 +112,12 @@ class DpadListTileButton extends StatefulWidget {
   final GestureTapCallback? onDoubletap;
   final GestureTapCallback? onLongPress;
 
-  const DpadListTileButton({
+  const DpadTextfield({
     Key? key,
-    this.child,
+    this.onChanged,
+    required this.focusNodemine,
+    required this.textcontrollermine,
+    // this.child,
     this.foregroundDecoration,
     this.padding,
     this.alignment,
@@ -131,16 +125,6 @@ class DpadListTileButton extends StatefulWidget {
     this.height,
     this.margin,
     this.transform,
-    this.title,
-    this.pressedtitle,
-    this.nonpressedtitle,
-    this.subtitle,
-    this.leading,
-    this.buttonActivecolors = Colors.blue,
-    this.buttonNonActivecolors = Colors.grey,
-    this.customTrailling,
-    this.isCustomTraillingOn = false,
-    this.tick_ya_button = false,
     this.ontap,
     this.onDoubletap,
     this.colors,
@@ -151,8 +135,7 @@ class DpadListTileButton extends StatefulWidget {
     this.clipBehavior = Clip.none,
     this.focusedclipBehavior = Clip.none,
     this.nonfocusedclipBehavior = Clip.none,
-    this.duration,
-    this.isButtonPressed,
+    this.duration = const Duration(milliseconds: 500),
     this.focusedduration,
     this.nonfocusedduration,
     this.onEnd,
@@ -295,8 +278,10 @@ class DpadListTileButton extends StatefulWidget {
   }
 }
 
-class _FocusableEnterTapActionableWidget extends State<DpadListTileButton> {
+class _FocusableEnterTapActionableWidget extends State<DpadTextfield> {
   bool _gestureDetectorRequestedFocus = false;
+  // final FocusNode _textfocusnode = FocusNode();
+  // final TextEditingController _textEditingController = TextEditingController();
 
   KeyEventResult _handleOnKey(
       FocusNode node, RawKeyEvent event, BuildContext context) {
@@ -452,6 +437,7 @@ class _FocusableEnterTapActionableWidget extends State<DpadListTileButton> {
       return KeyEventResult.ignored;
     }
     widget._onPressedEnterOKAction!(context);
+
     return KeyEventResult.handled;
   }
 
@@ -825,76 +811,33 @@ class _FocusableEnterTapActionableWidget extends State<DpadListTileButton> {
   }
 
   Widget _getEnabledChild(bool hasFocus) {
-    Container container = Container(
-      child: ListTile(
-        leading: widget.leading,
-        subtitle: widget.subtitle,
-        title: (widget.title == null)
-            ? (widget.isButtonPressed!
-                ? widget.pressedtitle
-                : widget.nonpressedtitle)
-            : widget.title,
-        trailing: widget.isCustomTraillingOn!
-            ? widget.customTrailling
-            : (widget.tick_ya_button!
-                ? Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        height: 20,
-                        width: 20,
-                        decoration: widget.isButtonPressed!
-                            ? BoxDecoration(
-                                border: Border.all(
-                                    width: 1,
-                                    color: widget.buttonActivecolors!),
-                                borderRadius: BorderRadius.circular(25.0),
-                                color: Colors.transparent)
-                            : BoxDecoration(
-                                border: Border.all(
-                                    width: 1,
-                                    color: widget.buttonNonActivecolors!),
-                                borderRadius: BorderRadius.circular(25.0),
-                                color: Colors.transparent),
-                      ),
-                      Container(
-                        height: 12,
-                        width: 12,
-                        decoration: widget.isButtonPressed!
-                            ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(25.0),
-                                color: widget.buttonActivecolors)
-                            : BoxDecoration(
-                                borderRadius: BorderRadius.circular(25.0),
-                                color: widget.buttonNonActivecolors),
-                      ),
-                    ],
-                  )
-                : (Container(
-                    height: 30,
-                    width: 50,
-                    // color: selected ? Colors.red : Colors.blue,
-                    decoration: widget.isButtonPressed!
-                        ? BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.0),
-                            color: widget.buttonActivecolors)
-                        : BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.0),
-                            color: widget.buttonNonActivecolors),
-                    child: AnimatedAlign(
-                      alignment: widget.isButtonPressed!
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.linear,
-                      child: const Padding(
-                        padding: EdgeInsets.all(3.0),
-                        child: CircleAvatar(
-                            backgroundColor: Colors.white, maxRadius: 12),
-                      ),
-                    ),
-                  ))),
-      ),
+    AnimatedContainer Animatedcontainer = AnimatedContainer(
+      onEnd: () {
+        hasFocus
+            ? FocusScope.of(context).requestFocus(widget.focusNodemine)
+            : null;
+        hasFocus ? null : widget.textcontrollermine!.clear();
+      },
+      curve: (widget.curve == Curves.linear)
+          ? (hasFocus ? widget.focusedcurve : widget.nonfocusedcurve)
+          : Curves.linear,
+      duration: widget.duration!,
+      child: hasFocus
+          ? TextField(
+              onChanged:widget.onChanged,
+              //  (text) {
+              //   print('First text field: $text');
+              // },
+              textAlign: TextAlign.center,
+              cursorColor: Colors.black,
+              focusNode: widget.focusNodemine,
+              controller: widget.textcontrollermine,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Username',
+              ),
+            )
+          : widget.nonfocusedchild,
       color: (widget.colors == null)
           ? (hasFocus
               ? widget.focusedBackgroundColor
@@ -944,8 +887,7 @@ class _FocusableEnterTapActionableWidget extends State<DpadListTileButton> {
               : widget.nonfocusedclipBehavior)
           : Clip.none,
     );
-
-    return container;
+    return Animatedcontainer;
   }
 
   @override
