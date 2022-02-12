@@ -206,22 +206,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         width: 10,
                       ),
                       Dpad_timer_button(
-                        isFocusTimeron: false,
-                        onEnter: (details) => setState(() {
-                          _timer = Timer(const Duration(seconds: 3), () {
-                            // print('show ');
-                            setState(() {
-                              animation(context);
-                            });
-                          });
-                          amIHovering = true;
-                        }),
-                        onExit: (details) => setState(() {
-                          _timer!.cancel();
-                          // print('hide');
-                          amIHovering = true;
-                        }),
-                       onFocusduration: const Duration(seconds: 3),
+                        isFocusTimeron: true,
+                      //  onEnter: (details)=>print("object"),
+                       isMouseHoveron: false,
+                        onFocusduration: const Duration(seconds: 3),
                         height: 100,
                         onPressedEscAction: esckey,
                         width: 100,

@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, must_be_immutable
+// ignore_for_file: non_constant_identifier_names, must_be_immutable, unused_local_variable, unused_field
 
 import 'dart:async';
 
@@ -34,7 +34,10 @@ class Dpad_timer_button extends StatefulWidget {
   final Curve nonfocusedcurve;
   final String? debugLabel;
   final bool? autoFocus;
+
+  /// this required [onFocusduration=const Duration(seconds: 3) ]
   final bool? isFocusTimeron;
+  final bool? isMouseHoveron;
   final VoidBuildContext? _onPressedEnterOKAction;
   final VoidBuildContext? _onPressedEscAction;
   final VoidBuildContext? _onPressedSpacebarAction;
@@ -149,6 +152,8 @@ class Dpad_timer_button extends StatefulWidget {
     this.nonfocusedcurve = Curves.linear,
     this.transformAlignment,
     this.focusedheight,
+    this.isMouseHoveron,
+
     /// this required [onFocusduration=const Duration(seconds: 3) ]
     this.isFocusTimeron = false,
     this.focusedalignment,
@@ -282,6 +287,7 @@ class Dpad_timer_button extends StatefulWidget {
 
 class _FocusableEnterTapActionableWidget extends State<Dpad_timer_button> {
   bool _gestureDetectorRequestedFocus = false;
+  Timer? _timer;
 
   KeyEventResult _handleOnKey(
       FocusNode node, RawKeyEvent event, BuildContext context) {
@@ -801,7 +807,6 @@ class _FocusableEnterTapActionableWidget extends State<Dpad_timer_button> {
   }
 
   void _handleOnFocusChange(bool focusGained, BuildContext context) {
-    Timer? _timer;
     if (focusGained) {
       if (_gestureDetectorRequestedFocus) {
         _gestureDetectorRequestedFocus = false;
@@ -819,7 +824,20 @@ class _FocusableEnterTapActionableWidget extends State<Dpad_timer_button> {
 
   Widget _getEnabledChild(bool hasFocus) {
     MouseRegion Timercontainer = MouseRegion(
-      onEnter: widget.onEnter,
+      onEnter: (widget.onEnter == null)
+          ? (details) {
+              if (widget.isMouseHoveron == true) {
+                setState(() {
+                  _timer = Timer(widget.onFocusduration!, () {
+                    setState(() {
+                      print("hjgsfj");
+                      _onPressedEnterOKAction(context);
+                    });
+                  });
+                });
+              } else {}
+            }
+          : widget.onEnter,
       onExit: widget.onExit,
       onHover: widget.onHover,
       child: Container(
