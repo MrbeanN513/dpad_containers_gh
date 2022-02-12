@@ -5,22 +5,21 @@ import 'package:flutter/services.dart';
 
 import '../dpad_containers_gh.dart';
 
-/// kakak
 class DpadAnimatedContainerButton extends StatefulWidget {
-  Widget? child;
-  Decoration? backgroundDecoration;
-  EdgeInsetsGeometry? padding;
-  Decoration? foregroundDecoration;
-  double? width;
-  double? height;
-  Color? colors;
-  EdgeInsetsGeometry? margin;
-  Matrix4? transform;
-  AlignmentGeometry? alignment;
-  AlignmentGeometry? transformAlignment;
-  BoxConstraints? constraints;
-  Duration? duration;
-  VoidCallback? onEnd;
+  final Widget? child;
+  final Decoration? backgroundDecoration;
+  final EdgeInsetsGeometry? padding;
+  final Decoration? foregroundDecoration;
+  final double? width;
+  final double? height;
+  final Color? colors;
+  final EdgeInsetsGeometry? margin;
+  final Matrix4? transform;
+  final AlignmentGeometry? alignment;
+  final AlignmentGeometry? transformAlignment;
+  final BoxConstraints? constraints;
+  final Duration? duration;
+  final VoidCallback? onEnd;
   final Duration? focusedduration;
   final Duration? nonfocusedduration;
   final VoidCallback? focusedonEnd;
@@ -30,6 +29,7 @@ class DpadAnimatedContainerButton extends StatefulWidget {
   final Curve nonfocusedcurve;
   final String? debugLabel;
   final bool? autoFocus;
+
   final VoidBuildContext? _onPressedEnterOKAction;
   final VoidBuildContext? _onPressedEscAction;
   final VoidBuildContext? _onPressedSpacebarAction;
@@ -108,12 +108,10 @@ class DpadAnimatedContainerButton extends StatefulWidget {
   final Matrix4? nonfocusedtransform;
   final GestureTapCallback? ontap;
   final GestureTapCallback? onDoubletap;
+  final GestureTapCallback? onLongPress;
 
-  DpadAnimatedContainerButton({
+  const DpadAnimatedContainerButton({
     Key? key,
-    VoidBuildContext? onPressedEnterOKAction,
-    VoidBuildContext? onPressedEscAction,
-    VoidBuildContext? onPressedSpacebarAction,
     this.child,
     this.foregroundDecoration,
     this.padding,
@@ -132,7 +130,7 @@ class DpadAnimatedContainerButton extends StatefulWidget {
     this.clipBehavior = Clip.none,
     this.focusedclipBehavior = Clip.none,
     this.nonfocusedclipBehavior = Clip.none,
-    @required this.duration,
+    required this.duration,
     this.focusedduration,
     this.nonfocusedduration,
     this.onEnd,
@@ -167,6 +165,10 @@ class DpadAnimatedContainerButton extends StatefulWidget {
     this.focusedmargin,
     this.nonfocusedmargin,
     this.voidTrapKeyEvent,
+    this.onLongPress,
+    VoidBuildContext? onPressedEnterOKAction,
+    VoidBuildContext? onPressedEscAction,
+    VoidBuildContext? onPressedSpacebarAction,
     VoidBuildContext? onKey_a,
     VoidBuildContext? onKey_b,
     VoidBuildContext? onKey_c,
@@ -214,6 +216,7 @@ class DpadAnimatedContainerButton extends StatefulWidget {
     VoidBuildContext? onKey_numberpad_home,
   })  :
         // assert(focusedchild != null, nonfocusedchild != null),
+
         _onPressedEnterOKAction = onPressedEnterOKAction,
         _onPressedEscAction = onPressedEscAction,
         _onKey_a = onKey_a,
@@ -431,7 +434,6 @@ class _FocusableEnterTapActionableWidget
     return KeyEventResult.handled;
   }
 
-  //?
   KeyEventResult _onKey_a(BuildContext context) {
     if (widget._onKey_a == null) {
       return KeyEventResult.ignored;
@@ -872,13 +874,30 @@ class _FocusableEnterTapActionableWidget
       final hasFocus = focusNode.hasFocus;
 
       GestureDetector gestureDetector = GestureDetector(
-          onTap: widget.ontap,
-          onDoubleTap: widget.onDoubletap,
+          onTap: () {
+            if (!hasFocus) {
+              _gestureDetectorRequestedFocus = true;
+              focusNode.requestFocus();
+            } else {
+              widget.ontap;
+              _onPressedEnterOKAction(context);
+            }
+          },
+          onDoubleTap: () {
+            if (!hasFocus) {
+              _gestureDetectorRequestedFocus = true;
+              focusNode.requestFocus();
+            } else {
+              widget.onDoubletap;
+              _onPressedEnterOKAction(context);
+            }
+          },
           onLongPress: () {
             if (!hasFocus) {
               _gestureDetectorRequestedFocus = true;
               focusNode.requestFocus();
             } else {
+              widget.onLongPress;
               _onPressedEnterOKAction(context);
             }
           },

@@ -10,18 +10,18 @@ typedef VoidTrapKeyEvent = void Function(
 /// kakka
 // ignore: must_be_immutable
 class DpadContainerButton extends StatefulWidget {
-  Widget? child;
-  Decoration? backgroundDecoration;
-  EdgeInsetsGeometry? padding;
-  Decoration? foregroundDecoration;
-  double? width;
-  double? height;
-  Color? colors;
-  EdgeInsetsGeometry? margin;
-  Matrix4? transform;
-  AlignmentGeometry? alignment;
-  AlignmentGeometry? transformAlignment;
-  BoxConstraints? constraints;
+  final Widget? child;
+  final Decoration? backgroundDecoration;
+  final EdgeInsetsGeometry? padding;
+  final Decoration? foregroundDecoration;
+  final double? width;
+  final double? height;
+  final Color? colors;
+  final EdgeInsetsGeometry? margin;
+  final Matrix4? transform;
+  final AlignmentGeometry? alignment;
+  final AlignmentGeometry? transformAlignment;
+  final BoxConstraints? constraints;
   final String? debugLabel;
   final bool? autoFocus;
   final VoidBuildContext? _onPressedEnterOKAction;
@@ -102,8 +102,8 @@ class DpadContainerButton extends StatefulWidget {
   final Matrix4? nonfocusedtransform;
   final GestureTapCallback? ontap;
   final GestureTapCallback? onDoubletap;
-
-  DpadContainerButton({
+final GestureTapCallback? onLongPress;
+  const DpadContainerButton({
     Key? key,
     VoidBuildContext? onPressedEnterOKAction,
     VoidBuildContext? onPressedEscAction,
@@ -117,6 +117,7 @@ class DpadContainerButton extends StatefulWidget {
     this.margin,
     this.transform,
     this.ontap,
+    this.onLongPress,
     this.onDoubletap,
     this.colors,
     this.constraints,
@@ -848,13 +849,30 @@ class _FocusableEnterTapActionableWidget extends State<DpadContainerButton> {
       final hasFocus = focusNode.hasFocus;
 
       GestureDetector gestureDetector = GestureDetector(
-          onTap: widget.ontap,
-          onDoubleTap: widget.onDoubletap,
+          onTap: () {
+            if (!hasFocus) {
+              _gestureDetectorRequestedFocus = true;
+              focusNode.requestFocus();
+            } else {
+              widget.ontap;
+              _onPressedEnterOKAction(context);
+            }
+          },
+          onDoubleTap: () {
+            if (!hasFocus) {
+              _gestureDetectorRequestedFocus = true;
+              focusNode.requestFocus();
+            } else {
+              widget.onDoubletap;
+              _onPressedEnterOKAction(context);
+            }
+          },
           onLongPress: () {
             if (!hasFocus) {
               _gestureDetectorRequestedFocus = true;
               focusNode.requestFocus();
             } else {
+              widget.onLongPress;
               _onPressedEnterOKAction(context);
             }
           },
