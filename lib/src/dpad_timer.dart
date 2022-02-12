@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, must_be_immutable, unused_local_variable, unused_field
+// ignore_for_file: non_constant_identifier_names, must_be_immutable, unused_local_variable, unused_field, avoid_print
 
 import 'dart:async';
 
@@ -38,6 +38,9 @@ class Dpad_timer_button extends StatefulWidget {
   /// this required [onFocusduration=const Duration(seconds: 3) ]
   final bool? isFocusTimeron;
   final bool? isMouseHoveron;
+  final VoidBuildContext? _onMouseHoverAction;
+  final VoidBuildContext? _onFocasableAction;
+
   final VoidBuildContext? _onPressedEnterOKAction;
   final VoidBuildContext? _onPressedEscAction;
   final VoidBuildContext? _onPressedSpacebarAction;
@@ -181,6 +184,8 @@ class Dpad_timer_button extends StatefulWidget {
     this.nonfocusedmargin,
     this.voidTrapKeyEvent,
     this.onLongPress,
+    VoidBuildContext? onMouseHoverAction,
+    VoidBuildContext? onFocasableAction,
     VoidBuildContext? onPressedEnterOKAction,
     VoidBuildContext? onPressedEscAction,
     VoidBuildContext? onPressedSpacebarAction,
@@ -231,6 +236,8 @@ class Dpad_timer_button extends StatefulWidget {
     VoidBuildContext? onKey_numberpad_home,
   })  : _onPressedEnterOKAction = onPressedEnterOKAction,
         _onPressedEscAction = onPressedEscAction,
+        _onFocasableAction = onFocasableAction,
+        _onMouseHoverAction = onMouseHoverAction,
         _onKey_a = onKey_a,
         _onKey_b = onKey_b,
         _onKey_c = onKey_c,
@@ -814,7 +821,8 @@ class _FocusableEnterTapActionableWidget extends State<Dpad_timer_button> {
       }
       if (focusGained == true && widget.isFocusTimeron == true) {
         _timer = Timer(widget.onFocusduration!, () {
-          _onPressedEnterOKAction(context);
+          widget._onFocasableAction!(context);
+          // _onPressedEnterOKAction(context);
         });
       }
     } else {
@@ -830,15 +838,29 @@ class _FocusableEnterTapActionableWidget extends State<Dpad_timer_button> {
                 setState(() {
                   _timer = Timer(widget.onFocusduration!, () {
                     setState(() {
-                      print("hjgsfj");
-                      _onPressedEnterOKAction(context);
+                      widget._onMouseHoverAction!(context);
+                      print("on entry");
+                      // _onPressedEnterOKAction(context);
                     });
                   });
                 });
-              } else {}
+              } else {
+                _timer!.cancel();
+              }
             }
           : widget.onEnter,
-      onExit: widget.onExit,
+      onExit: (widget.onExit == null)
+          ? (details) {
+              if (widget.isMouseHoveron == true) {
+                setState(() {
+                  _timer!.cancel();
+                  print("on exit");
+                });
+              } else {
+                _timer!.cancel();
+              }
+            }
+          : widget.onExit,
       onHover: widget.onHover,
       child: Container(
         child: (widget.child == null)

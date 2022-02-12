@@ -207,8 +207,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Dpad_timer_button(
                         isFocusTimeron: true,
+                      onFocasableAction: animation,
+                        onMouseHoverAction:animation, 
                       //  onEnter: (details)=>print("object"),
-                       isMouseHoveron: false,
+                       isMouseHoveron: true,
                         onFocusduration: const Duration(seconds: 3),
                         height: 100,
                         onPressedEscAction: esckey,
