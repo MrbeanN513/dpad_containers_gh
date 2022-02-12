@@ -221,7 +221,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           // print('hide');
                           amIHovering = true;
                         }),
-                        duration: const Duration(seconds: 3),
+                       onFocusduration: const Duration(seconds: 3),
                         height: 100,
                         onPressedEscAction: esckey,
                         width: 100,

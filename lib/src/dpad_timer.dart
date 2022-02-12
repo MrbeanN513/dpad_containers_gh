@@ -20,7 +20,7 @@ class Dpad_timer_button extends StatefulWidget {
   final AlignmentGeometry? alignment;
   final AlignmentGeometry? transformAlignment;
   final BoxConstraints? constraints;
-  final Duration? duration;
+  final Duration? onFocusduration;
   final PointerEnterEventListener? onEnter;
   final PointerHoverEventListener? onHover;
   final PointerExitEventListener? onExit;
@@ -138,7 +138,7 @@ class Dpad_timer_button extends StatefulWidget {
     this.clipBehavior = Clip.none,
     this.focusedclipBehavior = Clip.none,
     this.nonfocusedclipBehavior = Clip.none,
-    required this.duration,
+    this.onFocusduration = const Duration(seconds: 3),
     this.focusedduration,
     this.nonfocusedduration,
     this.onEnd,
@@ -149,6 +149,7 @@ class Dpad_timer_button extends StatefulWidget {
     this.nonfocusedcurve = Curves.linear,
     this.transformAlignment,
     this.focusedheight,
+    /// this required [onFocusduration=const Duration(seconds: 3) ]
     this.isFocusTimeron = false,
     this.focusedalignment,
     this.focusedconstraints,
@@ -223,10 +224,7 @@ class Dpad_timer_button extends StatefulWidget {
     VoidBuildContext? onKey_numberpad_pagedown,
     VoidBuildContext? onKey_numberpad_end,
     VoidBuildContext? onKey_numberpad_home,
-  })  :
-        // assert(focusedchild != null, nonfocusedchild != null),
-
-        _onPressedEnterOKAction = onPressedEnterOKAction,
+  })  : _onPressedEnterOKAction = onPressedEnterOKAction,
         _onPressedEscAction = onPressedEscAction,
         _onKey_a = onKey_a,
         _onKey_b = onKey_b,
@@ -809,8 +807,8 @@ class _FocusableEnterTapActionableWidget extends State<Dpad_timer_button> {
         _gestureDetectorRequestedFocus = false;
         _onPressedEnterOKAction(context);
       }
-      if (focusGained == true&&widget.isFocusTimeron==true) {
-        _timer = Timer(widget.duration!, () {
+      if (focusGained == true && widget.isFocusTimeron == true) {
+        _timer = Timer(widget.onFocusduration!, () {
           _onPressedEnterOKAction(context);
         });
       }
