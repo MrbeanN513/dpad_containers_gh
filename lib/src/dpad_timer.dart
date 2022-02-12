@@ -21,7 +21,9 @@ class Dpad_timer_button extends StatefulWidget {
   final AlignmentGeometry? transformAlignment;
   final BoxConstraints? constraints;
   final Duration? duration;
-
+  final PointerEnterEventListener? onEnter;
+  final PointerHoverEventListener? onHover;
+  final PointerExitEventListener? onExit;
   final VoidCallback? onEnd;
   final Duration? focusedduration;
   final Duration? nonfocusedduration;
@@ -32,7 +34,7 @@ class Dpad_timer_button extends StatefulWidget {
   final Curve nonfocusedcurve;
   final String? debugLabel;
   final bool? autoFocus;
-
+  final bool? isFocusTimeron;
   final VoidBuildContext? _onPressedEnterOKAction;
   final VoidBuildContext? _onPressedEscAction;
   final VoidBuildContext? _onPressedSpacebarAction;
@@ -120,6 +122,9 @@ class Dpad_timer_button extends StatefulWidget {
     this.padding,
     this.alignment,
     this.width,
+    this.onEnter,
+    this.onExit,
+    this.onHover,
     this.height,
     this.margin,
     this.transform,
@@ -144,6 +149,7 @@ class Dpad_timer_button extends StatefulWidget {
     this.nonfocusedcurve = Curves.linear,
     this.transformAlignment,
     this.focusedheight,
+    this.isFocusTimeron = false,
     this.focusedalignment,
     this.focusedconstraints,
     this.focusedtransformAlignment,
@@ -803,10 +809,9 @@ class _FocusableEnterTapActionableWidget extends State<Dpad_timer_button> {
         _gestureDetectorRequestedFocus = false;
         _onPressedEnterOKAction(context);
       }
-      if (focusGained == true) {
-        _timer = Timer(const Duration(seconds: 3), () {
+      if (focusGained == true&&widget.isFocusTimeron==true) {
+        _timer = Timer(widget.duration!, () {
           _onPressedEnterOKAction(context);
-          print("object");
         });
       }
     } else {
@@ -815,65 +820,63 @@ class _FocusableEnterTapActionableWidget extends State<Dpad_timer_button> {
   }
 
   Widget _getEnabledChild(bool hasFocus) {
-    AnimatedContainer Timercontainer = AnimatedContainer(
-      onEnd: (widget.onEnd == null)
-          ? (hasFocus ? widget.focusedonEnd : widget.nonfocusedonEnd)
-          : widget.onEnd,
-      curve: (widget.curve == Curves.linear)
-          ? (hasFocus ? widget.focusedcurve : widget.nonfocusedcurve)
-          : Curves.linear,
-      duration: widget.duration!,
-      child: (widget.child == null)
-          ? (hasFocus ? widget.focusedchild : widget.nonfocusedchild)
-          : widget.child,
-      color: (widget.colors == null)
-          ? (hasFocus
-              ? widget.focusedBackgroundColor
-              : widget.nonfocusedBackgroundColor)
-          : widget.colors,
-      alignment: (widget.alignment == null)
-          ? (hasFocus ? widget.focusedalignment : widget.nonfocusedalignment)
-          : widget.alignment,
-      constraints: (widget.constraints == null)
-          ? (hasFocus
-              ? widget.focusedconstraints
-              : widget.nonfocusedconstraints)
-          : widget.constraints,
-      decoration: (widget.backgroundDecoration == null)
-          ? (hasFocus
-              ? widget.focusedBackgroundDecoration
-              : widget.nonfocusedBackgroundDecoration)
-          : widget.backgroundDecoration,
-      padding: (widget.padding == null)
-          ? (hasFocus ? widget.focusedpadding : widget.nonfocusedpadding)
-          : widget.padding,
-      foregroundDecoration: (widget.foregroundDecoration == null)
-          ? (hasFocus
-              ? widget.focusedForegroundDecoration
-              : widget.nonfocusedForegroundDecoration)
-          : widget.foregroundDecoration,
-      width: (widget.width == null)
-          ? (hasFocus ? widget.focusedwidth : widget.nonfocusedwidth)
-          : widget.width,
-      height: (widget.height == null)
-          ? (hasFocus ? widget.focusedheight : widget.nonfocusedheight)
-          : widget.height,
-      margin: (widget.margin == null)
-          ? (hasFocus ? widget.focusedmargin : widget.nonfocusedmargin)
-          : widget.margin,
-      transform: (widget.transform == null)
-          ? (hasFocus ? widget.focusedtransform : widget.nonfocusedtransform)
-          : widget.transform,
-      transformAlignment: (widget.transformAlignment == null)
-          ? (hasFocus
-              ? widget.focusedtransformAlignment
-              : widget.nonfocusedtransformAlignment)
-          : widget.transformAlignment,
-      clipBehavior: (widget.clipBehavior == Clip.none)
-          ? (hasFocus
-              ? widget.focusedclipBehavior
-              : widget.nonfocusedclipBehavior)
-          : Clip.none,
+    MouseRegion Timercontainer = MouseRegion(
+      onEnter: widget.onEnter,
+      onExit: widget.onExit,
+      onHover: widget.onHover,
+      child: Container(
+        child: (widget.child == null)
+            ? (hasFocus ? widget.focusedchild : widget.nonfocusedchild)
+            : widget.child,
+        color: (widget.colors == null)
+            ? (hasFocus
+                ? widget.focusedBackgroundColor
+                : widget.nonfocusedBackgroundColor)
+            : widget.colors,
+        alignment: (widget.alignment == null)
+            ? (hasFocus ? widget.focusedalignment : widget.nonfocusedalignment)
+            : widget.alignment,
+        constraints: (widget.constraints == null)
+            ? (hasFocus
+                ? widget.focusedconstraints
+                : widget.nonfocusedconstraints)
+            : widget.constraints,
+        decoration: (widget.backgroundDecoration == null)
+            ? (hasFocus
+                ? widget.focusedBackgroundDecoration
+                : widget.nonfocusedBackgroundDecoration)
+            : widget.backgroundDecoration,
+        padding: (widget.padding == null)
+            ? (hasFocus ? widget.focusedpadding : widget.nonfocusedpadding)
+            : widget.padding,
+        foregroundDecoration: (widget.foregroundDecoration == null)
+            ? (hasFocus
+                ? widget.focusedForegroundDecoration
+                : widget.nonfocusedForegroundDecoration)
+            : widget.foregroundDecoration,
+        width: (widget.width == null)
+            ? (hasFocus ? widget.focusedwidth : widget.nonfocusedwidth)
+            : widget.width,
+        height: (widget.height == null)
+            ? (hasFocus ? widget.focusedheight : widget.nonfocusedheight)
+            : widget.height,
+        margin: (widget.margin == null)
+            ? (hasFocus ? widget.focusedmargin : widget.nonfocusedmargin)
+            : widget.margin,
+        transform: (widget.transform == null)
+            ? (hasFocus ? widget.focusedtransform : widget.nonfocusedtransform)
+            : widget.transform,
+        transformAlignment: (widget.transformAlignment == null)
+            ? (hasFocus
+                ? widget.focusedtransformAlignment
+                : widget.nonfocusedtransformAlignment)
+            : widget.transformAlignment,
+        clipBehavior: (widget.clipBehavior == Clip.none)
+            ? (hasFocus
+                ? widget.focusedclipBehavior
+                : widget.nonfocusedclipBehavior)
+            : Clip.none,
+      ),
     );
     return Timercontainer;
   }

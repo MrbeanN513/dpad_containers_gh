@@ -205,10 +205,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       const SizedBox(
                         width: 10,
                       ),
-                      MouseRegion(
+                      Dpad_timer_button(
+                        isFocusTimeron: false,
                         onEnter: (details) => setState(() {
                           _timer = Timer(const Duration(seconds: 3), () {
-                            print('show ');
+                            // print('show ');
                             setState(() {
                               animation(context);
                             });
@@ -217,33 +218,24 @@ class _MyHomePageState extends State<MyHomePage> {
                         }),
                         onExit: (details) => setState(() {
                           _timer!.cancel();
-                          print('hide');
+                          // print('hide');
                           amIHovering = true;
                         }),
-                        child: Dpad_timer_button(
-                          duration: const Duration(milliseconds: 20),
-                          // timer: Timer(const Duration(seconds: 3), () {
-                          //   print('show 1');
-                          //   setState(() {
-                          //     animation(context);
-                          //   });
-                          // }),
-
-                          height: 100,
-                          onPressedEscAction: esckey,
-                          width: 100,
-                          onPressedEnterOKAction: animation,
-                          focusedchild: const Center(child: Icon(Icons.tv)),
-                          nonfocusedchild: const Center(child: Icon(Icons.tv)),
-                          focusedBackgroundDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25.0),
-                              color: Colors.blue),
-                          nonfocusedBackgroundDecoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25.0),
-                              color: Colors.grey),
-                          // focusedBackgroundColor: Colors.blue,
-                          // nonfocusedBackgroundColor: Colors.grey,
-                        ),
+                        duration: const Duration(seconds: 3),
+                        height: 100,
+                        onPressedEscAction: esckey,
+                        width: 100,
+                        onPressedEnterOKAction: animation,
+                        focusedchild: const Center(child: Icon(Icons.tv)),
+                        nonfocusedchild: const Center(child: Icon(Icons.tv)),
+                        focusedBackgroundDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.0),
+                            color: Colors.blue),
+                        nonfocusedBackgroundDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.0),
+                            color: Colors.grey),
+                        // focusedBackgroundColor: Colors.blue,
+                        // nonfocusedBackgroundColor: Colors.grey,
                       ),
                       const SizedBox(
                         width: 10,
