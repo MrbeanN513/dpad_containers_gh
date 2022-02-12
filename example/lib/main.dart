@@ -92,10 +92,10 @@ class _MyHomePageState extends State<MyHomePage> {
   void animation(context) {
     setState(() {
       isvisable = true;
-    });
-    Future.delayed(const Duration(milliseconds: 20), () {
-      setState(() {
-        scale = scale == 1.0 ? 3.0 : 1.0;
+      Future.delayed(const Duration(milliseconds: 20), () {
+        setState(() {
+          scale = 3.0;
+        });
       });
     });
   }
@@ -103,10 +103,10 @@ class _MyHomePageState extends State<MyHomePage> {
   void esckey(context) {
     setState(() {
       isvisable = false;
-    });
-    Future.delayed(const Duration(milliseconds: 20), () {
-      setState(() {
-        scale = scale == 3.0 ? 1.0 : 3.0;
+      Future.delayed(const Duration(milliseconds: 20), () {
+        setState(() {
+          scale = 1.0;
+        });
       });
     });
   }
@@ -182,7 +182,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         width: 10,
                       ),
                       DpadContainerButton(
-                        autoFocus: true,
                         height: 100,
                         width: 100,
                         onPressedEscAction: esckey,
@@ -221,8 +220,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           print('hide');
                           amIHovering = true;
                         }),
-                        child: DpadContainerButton(
-                          autoFocus: true,
+                        child: Dpad_timer_button(
+                          duration: const Duration(milliseconds: 20),
+                          // timer: Timer(const Duration(seconds: 3), () {
+                          //   print('show 1');
+                          //   setState(() {
+                          //     animation(context);
+                          //   });
+                          // }),
+
                           height: 100,
                           onPressedEscAction: esckey,
                           width: 100,
@@ -243,7 +249,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         width: 10,
                       ),
                       DpadContainerButton(
-                        autoFocus: true,
                         height: 100,
                         width: 100,
                         onPressedEscAction: esckey,
@@ -296,6 +301,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 20,
                   ),
                   DpadAnimatedContainerButton(
+                    onEnd: () {},
                     onKey_numberpad_add: _increment,
                     onKey_numberpad_subtract: _decrement,
                     onPressedEnterOKAction: changeRedgreen,
